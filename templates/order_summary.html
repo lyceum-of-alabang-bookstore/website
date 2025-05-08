@@ -1,0 +1,176 @@
+
+<html lang="en">
+<head>
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style> /* default formats */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+			margin-top: 60px;
+        }
+		h1 {
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            margin-top: 0px;
+            width: 100%;
+            padding: 15px 50px;
+            border-radius: 10px;
+            background-color: rgb(0, 0, 204);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .action-btn {
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 4px 3px;
+        }
+        .subtract-btn {
+            background-color: #8a8a8a;
+            color: black;
+            padding: 4px 3px;
+        }
+        .remove-btn {
+            background-color: transparent;
+            color: white;
+            padding: 4px 3px;
+        }
+        .add-btn:hover {
+            background-color: #66ff20;
+        }
+        .subtract-btn:hover {
+            background-color: #949494;
+        }
+        .remove-btn:hover {
+            background-color: #bbbbbb;
+        }
+        .total {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1><font color="yellow">YOUR LIST</font></h1>
+	<h2 style="text-align:center;">Order Summary </h2>
+
+    <table id="orderTable"> <!--Table display format-->
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Price (₱)</th>
+                <th>Quantity</th>
+                <th>Subtotal (₱)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="total" id="totalPrice">Total: ₱0</div> <!--Display total-->
+	
+	<h3 style="text-align:center;">Take a screenshot of your order summary and show it to the bookstore counter.</h3>
+	
+	<div style="text-align:center; margin-top: 30px;">
+    <button onclick="browseItems()" class="browse-btn">Browse More Items</button>
+	</div>
+	
+
+    <script>
+    let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+
+    function updateTable() {
+        const tableBody = document.querySelector('#orderTable tbody');
+        tableBody.innerHTML = '';
+        let total = 0;
+
+        orderList.forEach((item, index) => {
+            const subtotal = item.price * item.quantity;
+            total += subtotal; /* Adds subtotal for each item */
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${item.name}</td>
+                <td>₱${item.price}</td>
+                <td>${item.quantity}</td>
+                <td>₱${subtotal}</td>
+                <td>
+                    <button class="action-btn add-btn" onclick="addQuantity(${index})">➕</button>
+                    <button class="action-btn subtract-btn" onclick="subtractQuantity(${index})">➖</button>
+                    <button class="action-btn remove-btn" onclick="removeItem(${index})">❌</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        document.getElementById('totalPrice').innerText = `Total: ₱${total}`;
+        localStorage.setItem('orderList', JSON.stringify(orderList)); 
+    }
+
+    function addQuantity(index) {
+        orderList[index].quantity++;
+        updateTable();
+    }
+
+    function subtractQuantity(index) {
+        if (orderList[index].quantity > 1) {
+            orderList[index].quantity--;
+        } else {
+            removeItem(index);
+        }
+        updateTable();
+    }
+
+    function removeItem(index) {
+        confirmRemove();
+        orderList.splice(index, 1);
+        updateTable();
+    }
+
+    function confirmRemove(index,item) {
+            alert('Item removed from list');
+        }
+        localStorage.setItem('orderList', JSON.stringify(orderList));
+	
+	function browseItems() {
+    window.location.href = '/category.html'; /* Redirects back to categories */
+	}
+
+    window.onload = updateTable;
+    </script>
+
+</body>
+</html>

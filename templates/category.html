@@ -1,0 +1,58 @@
+
+<html lang="en">
+<head>
+        <h1><font color="yellow">LYCEUM OF ALABANG BOOKSTORE</font></h1>
+    <title>Select category</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style> /* default formats */
+        h1 {
+            font-family: Arial, sans-serif ;
+            position: absolute;
+            top: 6%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            margin-top: 0px;
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 10px;
+            background-color: rgb(0, 0, 204);
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h2 {
+            font-family: Cambria;
+            font-size: 32px;
+        }
+        .all-item-btn  {
+			margin-right: 16px;
+			margin-left: 0px;
+			padding: 6px 10px;
+			background-color: rgb(0, 0, 204);
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 19px;
+			color: white;
+		}
+		.stock-item-btn  {
+			margin-left: 130px;
+			padding: 6px 10px;
+			background-color: rgb(0, 0, 204);
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 19px;
+			color: white;
+		}
+    </style>
+</head>
+<body style="text-align:center; margin-top:100px;">
+    <h2>Select Category</h3><br></h2>
+    <!-- Seperate buttons for each category to be linked respectively-->
+    <img src="https://static.vecteezy.com/system/resources/previews/026/627/764/non_2x/list-icon-symbol-design-illustration-vector.jpg" style="margin-right:10px; margin-left:10px; width: 15%; border-radius: 15px; padding: 10px;">
+    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/590/547/small/box-carton-delivery-line-style-icon-free-vector.jpg" style="margin-right:10px; margin-left:10px; width: 15%; border-radius: 15px; padding: 10px;"><br>
+	<button onclick="location.href='all_items.html'" class="all-item-btn">All Items</button> 
+    <button onclick="location.href='in_stock.html'" class="stock-item-btn">In-stock</button>
+</body>
+</html>
