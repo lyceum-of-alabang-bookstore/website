@@ -1,8 +1,31 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for
+from flask import Flask, render_template, jsonify, request, redirect, url_for, Response
 import sqlite3
 import os
 
 app = Flask(__name__)
+
+USERNAME = 'admin'
+PASSWORD = 'secret'
+
+def check_auth(username, password):
+    return username == USERNAME and password == PASSWORD
+
+def authenticate():
+    return Response(
+        'Access denied.\n'
+        'You need to login with proper credentials.', 401,
+        {'WWW-Authenticate': 'Basic realm="Login Required"'}
+    )
+
+def requires_auth(f):
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    decorated.__name__ = f.__name__
+    return decorated
+
 
 # Use an absolute path for the database file
 DB_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'items.db')
@@ -97,6 +120,7 @@ def admin_delete(item_id):
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
+    import os
     port = int(os.environ.get('PORT', 5000))  # Use PORT env var if available
     app.run(host='0.0.0.0', port=port)
 
