@@ -97,4 +97,6 @@ def admin_delete(item_id):
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # Use PORT env var if available
+    app.run(host='0.0.0.0', port=port)
+
