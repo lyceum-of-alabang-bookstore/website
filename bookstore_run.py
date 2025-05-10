@@ -110,14 +110,16 @@ def admin_add():
         cursor.execute("INSERT INTO items (name, category, price, stock_status) VALUES (?, ?, ?, ?)",
                        (name, category, price, stock_status))
         conn.commit()
+
     return redirect(url_for('admin'))
 
-@app.route('/admin/delete/<int:item_id>')
-def admin_delete(item_id):
+@app.route('/admin/remove/<int:item_id>', methods=['POST'])
+def admin_remove(item_id):
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM items WHERE id = ?", (item_id,))
         conn.commit()
+
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
