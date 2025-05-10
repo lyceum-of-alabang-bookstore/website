@@ -1,8 +1,11 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, Response
+from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash
 import sqlite3
 import os
 
 app = Flask(__name__)
+
+app.secret_key = 'a7e4c1c9023b45db92d7b7d47375f91f2092f7a46c2f4b8c2834fbc92eeb23d1'
+
 
 USERNAME = 'admin'
 PASSWORD = 'secret'
@@ -95,6 +98,7 @@ def admin_edit(item_id):
         cursor.execute("UPDATE items SET name = ?, category = ?, price = ?, stock_status = ? WHERE id = ?",
                        (name, category, price, stock_status, item_id))
         conn.commit()
+    flash('Item updated successfully.')
     return redirect(url_for('admin'))
 
 
@@ -110,7 +114,7 @@ def admin_add():
         cursor.execute("INSERT INTO items (name, category, price, stock_status) VALUES (?, ?, ?, ?)",
                        (name, category, price, stock_status))
         conn.commit()
-
+    flash('Item added successfully.')
     return redirect(url_for('admin'))
 
 @app.route('/admin/remove/<int:item_id>', methods=['POST'])
@@ -120,6 +124,7 @@ def admin_remove(item_id):
         cursor.execute("DELETE FROM items WHERE id = ?", (item_id,))
         conn.commit()
 
+    flash('Item deleted successfully.')
     return redirect(url_for('admin'))
 
 if __name__ == '__main__':
