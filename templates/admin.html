@@ -67,13 +67,25 @@
         form.inline-form {
             display: inline;
         }
-    </style>
+</style>
 </head>
 <body>
     <h1>Admin - Inventory</h1>
 
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin: 20px auto; text-align: center; width: 90%;">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Add Item Form -->
     <h2>Add New Item</h2>
-    <form action="/admin/add" method="post" class="add-form">
+    <form class="add-form" action="/admin/add" method="post">
         <input type="text" name="name" placeholder="Name" required>
         <input type="text" name="category" placeholder="Category" required>
         <input type="number" name="price" step="0.01" placeholder="Price" required>
@@ -84,35 +96,31 @@
         <button type="submit">Add Item</button>
     </form>
 
+    <!-- Items Table -->
     <h2>Items</h2>
     <table>
         <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Status</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Name</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th>
         </tr>
         {% for item in items %}
         <tr>
-            <form action="/admin/edit/{{ item.id }}" method="post">
-                <td><input type="text" name="name" value="{{ item.name }}" required></td>
-                <td><input type="text" name="category" value="{{ item.category }}" required></td>
-                <td><input type="number" name="price" step="0.01" value="{{ item.price }}" required></td>
-                <td>
-                    <select name="stock_status">
-                        <option value="In-stock" {% if item.stock_status == 'In-stock' %}selected{% endif %}>In-stock</option>
-                        <option value="Out-of-stock" {% if item.stock_status == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
-                    </select>
+		   <form action="/admin/edit/{{ item.id }}" method="post">
+				<td><input type="text" name="name" value="{{ item.name }}" required></td>
+				<td><input type="text" name="category" value="{{ item.category }}" required></td>
+				<td><input type="number" name="price" step="0.01" value="{{ item.price }}" required></td>
+				<td>
+					<select name="stock_status">
+						<option value="In-stock" {% if item.stock_status == 'In-stock' %}selected{% endif %}>In-stock</option>
+						<option value="Out-of-stock" {% if item.stock_status == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
+					</select>
+				</td>
+				<td><button type="submit" class="edit-btn">Save</button></td>
+			</form>
+			<td>
+				<form action="/admin/remove/{{ item.id }}" method="post">
+					<button type="submit" class="delete-btn" onclick="return confirm('Delete this item?')">Delete</button>
+				</form>
                 </td>
-                <td><button type="submit" class="edit-btn">Save</button></td>
-            </form>
-            <td>
-                <form action="/admin/remove/{{ item.id }}" method="post" style="display:inline;">
-                    <button type="submit" class="delete-btn" onclick="return confirm('Delete this item?')">Delete</button>
-                </form>
-            </td>
         </tr>
         {% endfor %}
     </table>

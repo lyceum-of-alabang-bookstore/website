@@ -8,7 +8,7 @@ app.secret_key = 'a7e4c1c9023b45db92d7b7d47375f91f2092f7a46c2f4b8c2834fbc92eeb23
 
 
 USERNAME = 'Administrator'
-PASSWORD = 'loabookstoreadmin2003'
+PASSWORD = 'loabookstore2003'
 
 def check_auth(username, password):
     return username == USERNAME and password == PASSWORD
@@ -88,6 +88,8 @@ def admin():
 
 @app.route('/admin/edit/<int:item_id>', methods=['POST'])
 def admin_edit(item_id):
+    print("Form data received:", request.form)  # <--- Add this line
+
     name = request.form['name']
     category = request.form['category']
     price = request.form['price']
@@ -100,7 +102,6 @@ def admin_edit(item_id):
         conn.commit()
     flash('Item updated successfully.')
     return redirect(url_for('admin'))
-
 
 @app.route('/admin/add', methods=['POST'])
 def admin_add():
