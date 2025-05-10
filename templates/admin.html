@@ -70,7 +70,26 @@
 </style>
 </head>
 <body>
-    <h1>Admin - Inventory</h1>
+   <h1 style="text-align:center;">Admin Access - Bookstore Inventory Editor</h1>
+	
+	<div class="search-form">
+        <input type="text" id="searchInput" placeholder="Search by item name..." onkeyup="searchTable()">
+    </div>
+
+  
+    <div class="add-form">
+        <h3 style="text-align:center">Add New Item</h3>
+        <form method="POST" action="/admin/add">
+            <input type="text" name="name" placeholder="Item Name" required>
+            <input type="text" name="category" placeholder="Category" required>
+            <input type="number" name="price" placeholder="Price" required>
+            <select name="stock_status" required>
+                <option value="In-stock">In-stock</option>
+                <option value="Out of stock">Out of stock</option>
+            </select>
+            <button type="submit">➕ Add Item</button>
+        </form>
+    </div>
 
     <!-- Flash messages -->
     {% with messages = get_flashed_messages() %}
@@ -91,7 +110,7 @@
         <input type="number" name="price" step="0.01" placeholder="Price" required>
         <select name="stock_status">
             <option value="In-stock">In-stock</option>
-            <option value="Out-of-stock">Out-of-stock</option>
+            <option value="Out of stock">Out of stock</option>
         </select>
         <button type="submit">Add Item</button>
     </form>
@@ -119,7 +138,7 @@
                     <td>
                         <select name="stock_status">
                             <option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
-                            <option value="Out-of-stock" {% if item['stock_status'] == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
+                            <option value="Out of stock" {% if item['stock_status'] == 'Out of stock' %}selected{% endif %}>Out of stock</option>
                         </select>
                     </td>
                     <td>
