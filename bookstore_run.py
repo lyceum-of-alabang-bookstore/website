@@ -7,8 +7,8 @@ app = Flask(__name__)
 app.secret_key = 'a7e4c1c9023b45db92d7b7d47375f91f2092f7a46c2f4b8c2834fbc92eeb23d1'
 
 
-USERNAME = 'admin'
-PASSWORD = 'secret'
+USERNAME = 'Administrator'
+PASSWORD = 'loabookstoreadmin2003'
 
 def check_auth(username, password):
     return username == USERNAME and password == PASSWORD
