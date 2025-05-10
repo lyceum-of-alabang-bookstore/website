@@ -1,54 +1,39 @@
 
-<html>
+<html lang="en">
 <head>
-    <title>ADMIN Dashboard</title>
-	<link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+        }
+        input, select {
+            width: 100%;
+        }
+        form.inline {
+            display: inline;
+        }
+    </style>
 </head>
 <body>
     <h1>Admin - Inventory</h1>
 
     <!-- Add Item Form -->
-    <h2>Add New Item</h2>
-    <form action="/admin/add" method="post">
-        <input type="text" name="name" placeholder="Name" required>
-        <input type="text" name="category" placeholder="Category" required>
-        <input type="number" name="price" step="0.01" placeholder="Price" required>
-        <select name="stock_status">
-            <option value="In-stock">In-stock</option>
-            <option value="Out-of-stock">Out-of-stock</option>
-        </select>
-        <button type="submit">Add Item</button>
-    </form>
-
-    <!-- List of Items with Edit and Delete Forms -->
-    <h2>Items</h2>
-    <table border="1">
-        <tr>
-            <th>Name</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th>
-        </tr>
-        {% for item in items %}
-        <tr>
-            <!-- Edit Form -->
-            <form action="/admin/edit/{{ item['id'] }}" method="post">
-                <td><input type="text" name="name" value="{{ item['name'] }}" required></td>
-                <td><input type="text" name="category" value="{{ item['category'] }}" required></td>
-                <td><input type="number" name="price" value="{{ item['price'] }}" step="0.01" required></td>
-                <td>
-                    <select name="stock_status">
-                        <option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
-                        <option value="Out-of-stock" {% if item['stock_status'] == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit">Update</button>
-            </form>
-            <!-- Delete Form -->
-            <form action="/admin/remove/{{ item['id'] }}" method="post" style="display:inline;">
-                <button type="submit" onclick="return confirm('Delete this item?')">Delete</button>
-            </form>
-                </td>
-        </tr>
-        {% endfor %}
-    </table>
-</body>
-</html>
+    <section>
+        <h2>Add New Item</h2>
+        <form action="/admin/add" method="post">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="text" name="category" placeholder="Category" required>
+            <input type="number" name="price" step="0.01" placeholder="Price" required>
+            <select name="stock_status">
+                <option value="In-stock">In-stock</option>
+                <option value="Out-of-stock">Out-of-stock</option>
+            </select>
+            <button type="submit">Add Item</button>
+        </form>
