@@ -97,32 +97,59 @@
     </form>
 
     <!-- Items Table -->
-    <h2>Items</h2>
-    <table>
-        <tr>
-            <th>Name</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th>
-        </tr>
-        {% for item in items %}
-        <tr>
-		   <form action="/admin/edit/{{ item.id }}" method="post">
-				<td><input type="text" name="name" value="{{ item.name }}" required></td>
-				<td><input type="text" name="category" value="{{ item.category }}" required></td>
-				<td><input type="number" name="price" step="0.01" value="{{ item.price }}" required></td>
-				<td>
-					<select name="stock_status">
-						<option value="In-stock" {% if item.stock_status == 'In-stock' %}selected{% endif %}>In-stock</option>
-						<option value="Out-of-stock" {% if item.stock_status == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
-					</select>
-				</td>
-				<td><button type="submit" class="edit-btn">Save</button></td>
-			</form>
-			<td>
-				<form action="/admin/remove/{{ item.id }}" method="post">
-					<button type="submit" class="delete-btn" onclick="return confirm('Delete this item?')">Delete</button>
-				</form>
-                </td>
-        </tr>
-        {% endfor %}
+    <table id="itemsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Price (₱)</th>
+                <th>Stock Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <form method="POST" action="/admin/edit/{{ item['id'] }}" class="inline-form">
+                    <td>{{ item['id'] }}</td>
+                    <td><input type="text" name="name" value="{{ item['name'] }}" required></td>
+                    <td><input type="text" name="category" value="{{ item['category'] }}" required></td>
+                    <td><input type="number" name="price" value="{{ item['price'] }}" required></td>
+                    <td>
+                        <select name="stock_status">
+                            <option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
+                            <option value="Out of stock" {% if item['stock_status'] == 'Out of stock' %}selected{% endif %}>Out of stock</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" class="edit-btn">Save</button>
+                        <a href="/admin/delete/{{ item['id'] }}" class="delete-btn">Delete</a>
+                    </td>
+                </form>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+	 <script>
+    function searchTable() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchInput");
+        filter = input.value.toLowerCase();
+        table = document.getElementById("itemsTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) { // skip header
+            td = tr[i].getElementsByTagName("td")[1]; // Name column
+            if (td) {
+                txtValue = td.querySelector('input').value;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+    </script>
 </body>
 </html>
