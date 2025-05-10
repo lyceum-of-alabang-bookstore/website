@@ -1,22 +1,70 @@
 
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <title>ADMIN - Bookstore Inventory Editor</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin-top: 45px
+        }
+        .add-form, .search-form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .add-form input, .add-form select, .search-form input {
+            padding: 8px;
+            margin: 5px;
+        }
+        .add-form button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .add-form button:hover {
+            background-color: #218838;
+        }
         table {
+            width: 90%;
+            margin: 0 auto;
             border-collapse: collapse;
-            width: 100%;
+            background-color: white;
         }
         th, td {
-            padding: 0.5rem;
             border: 1px solid #ccc;
+            padding: 12px;
+            text-align: center;
         }
-        input, select {
-            width: 100%;
+        th {
+            background-color: #003366;
+            color: white;
         }
-        form.inline {
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .edit-btn, .delete-btn {
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+        }
+        .edit-btn {
+            background-color: #007bff;
+        }
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        form.inline-form {
             display: inline;
         }
     </style>
@@ -25,15 +73,47 @@
     <h1>Admin - Inventory</h1>
 
     <!-- Add Item Form -->
-    <section>
-        <h2>Add New Item</h2>
-        <form action="/admin/add" method="post">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="text" name="category" placeholder="Category" required>
-            <input type="number" name="price" step="0.01" placeholder="Price" required>
-            <select name="stock_status">
-                <option value="In-stock">In-stock</option>
-                <option value="Out-of-stock">Out-of-stock</option>
-            </select>
-            <button type="submit">Add Item</button>
-        </form>
+    <h2>Add New Item</h2>
+    <form action="/admin/add" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="category" placeholder="Category" required>
+        <input type="number" name="price" step="0.01" placeholder="Price" required>
+        <select name="stock_status">
+            <option value="In-stock">In-stock</option>
+            <option value="Out-of-stock">Out-of-stock</option>
+        </select>
+        <button type="submit">Add Item</button>
+    </form>
+
+    <!-- List of Items with Edit and Delete Forms -->
+    <h2>Items</h2>
+    <table border="1">
+        <tr>
+            <th>Name</th><th>Category</th><th>Price</th><th>Status</th><th>Actions</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <!-- Edit Form -->
+            <form action="/admin/edit/{{ item['id'] }}" method="post">
+                <td><input type="text" name="name" value="{{ item['name'] }}" required></td>
+                <td><input type="text" name="category" value="{{ item['category'] }}" required></td>
+                <td><input type="number" name="price" value="{{ item['price'] }}" step="0.01" required></td>
+                <td>
+                    <select name="stock_status">
+                        <option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
+                        <option value="Out-of-stock" {% if item['stock_status'] == 'Out-of-stock' %}selected{% endif %}>Out-of-stock</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit">Update</button>
+            </form>
+            <!-- Delete Form -->
+            <form action="/admin/remove/{{ item['id'] }}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Delete this item?')">Delete</button>
+            </form>
+                </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
