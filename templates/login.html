@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ADMIN Login - Bookstore</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin-top: 100px;
+            background-color: #fbf572;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(0, 0, 204);
+            color: yellow;
+            font-size: 28px;
+            padding: 25px 200px;
+            margin: 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: yellow;
+            font-size: 26px;
+            margin: 0;
+        }
+
+        .logo-left, .logo-right {
+            position: absolute;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-left {
+            top: 10px;
+            left: 15px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .logo-right {
+            top: 8px;
+            right: 20px;
+            width: 65px;
+            height: 65px;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #003366;
+        }
+
+        .login-box input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .login-box button {
+            background-color: #050f3b;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background-color: #0056b3;
+        }
+
+        .flash-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 5px 10px;
+            margin: 15px auto;
+            width: 60%;
+			height: 10%;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ADMIN Login - Bookstore</h1>
+        <img src="https://i.ibb.co/TBZTnjSF/logo.png" alt="Lyceum of Alabang" class="logo-left">
+        <img src="https://i.ibb.co/HDSjB31w/nqa-removebg-preview.png" alt="ISO" class="logo-right">
+    </header>
+
+    <div class="login-box">
+        Log in to access inventory.<br>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

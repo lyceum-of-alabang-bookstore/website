@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash, session
+from functools import wraps
 import sqlite3
 import os
 
@@ -20,13 +21,12 @@ def authenticate():
         {'WWW-Authenticate': 'Basic realm="Login Required"'}
     )
 
-def requires_auth(f):
+def requires_login(f):
+    @wraps(f)
     def decorated(*args, **kwargs):
-        auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
         return f(*args, **kwargs)
-    decorated.__name__ = f.__name__
     return decorated
 
 
@@ -77,7 +77,7 @@ def order_summary():
     return render_template('order_summary.html')
 
 @app.route('/admin')
-@requires_auth
+@requires_login
 def admin():
     with sqlite3.connect(DB_FILE) as conn:
         conn.row_factory = sqlite3.Row
@@ -132,6 +132,20 @@ def delete_item(item_id):
 def homepage():
     session.clear()
     return redirect(url_for('home'))
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == USERNAME and password == PASSWORD:
+            session['logged_in'] = True
+            flash('Access granted!')
+            return redirect(url_for('admin'))
+        else:
+            flash('Access denied.')
+            return redirect(url_for('login'))
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
