@@ -118,8 +118,8 @@ def admin_add():
     flash('Item added successfully.')
     return redirect(url_for('admin'))
 
-@app.route('/admin/remove/<int:item_id>', methods=['POST'])
-def admin_remove(item_id):
+@app.route('/admin/delete/<int:item_id>', methods=['POST'])
+def delete_item(item_id):
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM items WHERE id = ?", (item_id,))

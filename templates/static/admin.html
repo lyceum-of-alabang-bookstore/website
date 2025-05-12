@@ -4,53 +4,26 @@
     <title>ADMIN - Bookstore Inventory Editor</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
-       body {
+		h1 {
+          font-family: Arial, sans-serif ;
+           position: absolute;
+           top: 6%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           border: 1px solid #ccc;
+           margin-top: 0px;
+           width: 100%;
+           padding: 15px 20px;
+           border-radius: 10px;
+           background-color: rgb(0, 0, 204);
+           box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+           text-align: center;
+        }
+        body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            margin-top: 50px
+            margin-top: 45px
         }
-		header {
-			position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: rgb(0, 0, 204);
-            color: yellow;
-            font-size: 28px;
-            padding: 25px 200px;
-            margin: 0;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-
-        header h1 {
-            color: yellow;
-            font-size: 26px;
-            margin: 0;
-        }
-		.logo-left, .logo-right {
-            position: absolute;
-            top: 20px;
-            width: 50px;
-            height: 50px;
-        }
-
-        .logo-left {
-			position: absolute;
-			top: 10px; 
-			left: 15px;
-			width: 60px;
-			height: 60px;
-		}
-
-		.logo-right {
-			position: absolute;
-			top: 8px; 
-			right: 20px;
-			width: 65px;
-			height: 65px;
-		}
         .add-form, .search-form {
             text-align: center;
             margin-bottom: 30px;
@@ -112,11 +85,8 @@
 </style>
 </head>
 <body>
-   	<header>
-        <h1>ADMIN Access - Inventory editor</h1>
-			<img src="https://i.ibb.co/TBZTnjSF/logo.png" alt="Lyceum of Alabang" class="logo-left">
-			<img src="https://i.ibb.co/HDSjB31w/nqa-removebg-preview.png" alt="ISO" class="logo-right">
-    </header>
+   <h1><font color="yellow">ADMIN Access - Inventory Editor</font></h1><br>
+
 
     <!-- Flash messages -->
     {% with messages = get_flashed_messages() %}
@@ -130,22 +100,17 @@
     {% endwith %}
 	
 		<div class="search-form">
-        <br><input type="text" id="searchInput" placeholder="Search by item name..." onkeyup="searchTable()">
+        <input type="text" id="searchInput" placeholder="Search by item name..." onkeyup="searchTable()">
     </div>
 
 
     <!-- Add Item Form -->
+    <h2>Add New Item</h2>
     <form class="add-form" action="/admin/add" method="post">
         <input type="text" name="name" placeholder="Name" required>
-        <select name="category" required>
-			<option value="" disabled selected hidden>Select category</option>
-            <option value="Uniforms">Uniforms</option>
-            <option value="School supplies">School supplies</option>
-			<option value="Others">Others</option>
-        </select>
+        <input type="text" name="category" placeholder="Category" required>
         <input type="number" name="price" step="0.01" placeholder="Price" required>
-        <select name="stock_status" required>
-			<option value="" disabled selected hidden>Stock</option>
+        <select name="stock_status">
             <option value="In-stock">In-stock</option>
             <option value="Out of stock">Out of stock</option>
         </select>
@@ -166,32 +131,30 @@
         </thead>
         <tbody>
             {% for item in items %}
-			<tr>
-				<form method="POST" action="/admin/edit/{{ item['id'] }}" class="inline-form">
-					<td>{{ item['id'] }}</td>
-					<td><input type="text" name="name" value="{{ item['name'] }}" required></td>
-					<td>
-						<select name="category" required>
-							<option value="Uniforms" {% if item['category'] == 'Uniforms' %}selected{% endif %}>Uniforms</option>
-							<option value="School supplies" {% if item['category'] == 'School supplies' %}selected{% endif %}>School supplies</option>
+            <tr>
+                <form method="POST" action="/admin/edit/{{ item['id'] }}" class="inline-form">
+                    <td>{{ item['id'] }}</td>
+                    <td><input type="text" name="name" value="{{ item['name'] }}" required></td>
+                    <td>
+					<select name="category">
+                            <option value="Uniforms" {% if item['category'] == 'Uniforms' %}selected{% endif %}>Uniforms</option>
+                            <option value="School supplies" {% if item['category'] == 'School supplies' %}selected{% endif %}>School supplies</option>
 							<option value="Others" {% if item['category'] == 'Others' %}selected{% endif %}>Others</option>
-						</select>
+                        </select>
 					</td>
-					<td><input type="number" name="price" value="{{ item['price'] }}" required></td>
-					<td>
-						<select name="stock_status" required>
-							<option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
-							<option value="Out of stock" {% if item['stock_status'] == 'Out of stock' %}selected{% endif %}>Out of stock</option>
-						</select>
-					</td>
-					<td>
-						<button type="submit" class="edit-btn">Save</button>
-					</form>
-					<form method="POST" action="/admin/delete/{{ item['id'] }}" style="display:inline;">
-						<button type="submit" class="delete-btn">Delete</button>
-					</form>
-					</td>
-			</tr>
+                    <td><input type="number" name="price" value="{{ item['price'] }}" required></td>
+                    <td>
+                        <select name="stock_status">
+                            <option value="In-stock" {% if item['stock_status'] == 'In-stock' %}selected{% endif %}>In-stock</option>
+                            <option value="Out of stock" {% if item['stock_status'] == 'Out of stock' %}selected{% endif %}>Out of stock</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" class="edit-btn">Save</button>
+                        <a href="/admin/delete/{{ item['id'] }}" class="delete-btn">Delete</a>
+                    </td>
+                </form>
+            </tr>
             {% endfor %}
         </tbody>
     </table>

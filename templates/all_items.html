@@ -1,52 +1,94 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <h1><font color="yellow">LYCEUM OF ALABANG BOOKSTORE</font></h1>
-    <title>All Items</title>
+    <meta charset="UTF-8">
+    <title>All Items - LOA Bookstore</title>
     <link rel="stylesheet" href="/static/style.css">
-    <style> /* default formats */
+    <style>
         body {
+            background-color: #fbf572;
             font-family: Arial, sans-serif;
             padding: 20px;
-			margin-top: 60px;
-        }
-        h1 {
-            position: absolute;
-            top: 6%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid #ccc;
-            margin-top: 0px;
-            width: 100%;
-            padding: 15px 50px;
-            border-radius: 10px;
-            background-color: rgb(0, 0, 204);
-            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            margin-top: 100px;
             text-align: center;
         }
+		header {
+			position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(0, 0, 204);
+            color: yellow;
+            font-size: 28px;
+            padding: 25px 200px;
+            margin: 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: yellow;
+            font-size: 26px;
+            margin: 0;
+        }
+		.logo-left, .logo-right {
+            position: absolute;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-left {
+			position: absolute;
+			top: 10px; 
+			left: 15px;
+			width: 60px;
+			height: 60px;
+		}
+
+		.logo-right {
+			position: absolute;
+			top: 8px; 
+			right: 20px;
+			width: 65px;
+			height: 65px;
+		}
+
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #000;
+        }
+
         .items-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            margin-top: 20px;
+            margin: 30px auto;
+            max-width: 1000px;
         }
+
         .item-card {
             border: 1px solid #ccc;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             background-color: white;
             box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
         }
+
         .item-card h3 {
-            margin: 10px 0;
+            margin: 10px 0 5px 0;
+            font-size: 20px;
         }
+
         .item-card p {
             margin: 5px 0;
         }
+
         .add-btn {
             margin-top: 10px;
-            padding: 5px 9px;
+            padding: 8px 15px;
             background-color: #28a745;
             color: white;
             border: none;
@@ -54,38 +96,65 @@
             border-radius: 6px;
             cursor: pointer;
         }
+
         .add-btn:hover {
             background-color: #218838;
         }
-		.view-btn {
-			margin-top: 10px;
-			padding: 8px 15px;
-			background-color: #050f3b;
-			border: none;
-			border-radius: 6px;
-			cursor: pointer;
-			font-size: 14px;
-			color: white;
-		}
-		.view-btn:hover {
-			background-color: #5f70b9;
-		}		
+
+        .add-btn:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .view-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background-color: #050f3b;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .view-btn:hover {
+            background-color: #5f70b9;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        select, input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin: 0 10px;
+            border-radius: 6px;
+            border: 1px solid #aaa;
+        }
     </style>
 </head>
 <body>
+	<header>
+        <h1>LYCEUM OF ALABANG BOOKSTORE</h1>
+			<img src="https://i.ibb.co/TBZTnjSF/logo.png" alt="Lyceum of Alabang" class="logo-left">
+			<img src="https://i.ibb.co/HDSjB31w/nqa-removebg-preview.png" alt="ISO" class="logo-right">
+    </header>
 
     <h2>All Items</h2>
 
-    <select id="categoryFilter" onchange="filterItems()" style="padding: 10px; margin-left: 10px;">
-        <option value="">All Categories</option>
-        <option value="School supplies">School Supplies</option>
-        <option value="Uniforms">Uniforms</option>
-        <option value="Others">Others</option>
-    </select>
+    <div class="controls">
+        <select id="categoryFilter" onchange="filterItems()">
+            <option value="">All Categories</option>
+            <option value="School supplies">School Supplies</option>
+            <option value="Uniforms">Uniforms</option>
+            <option value="Others">Others</option>
+        </select>
 
-    <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchItems()" style="padding: 10px; width: 300px; margin-bottom: 20px;">
+        <input type="text" id="searchInput" placeholder="Search..." onkeyup="searchItems()">
 
-    <button onclick="viewOrderList()" class="view-btn">🛒 View List</button>
+        <button onclick="viewOrderList()" class="view-btn">🛒 View List</button>
+    </div>
 
     <div id="items-container" class="items-grid"></div>
 
@@ -109,12 +178,12 @@
             card.innerHTML = `
                 <h3>${item.name}</h3>
                 <p>${item.category}</p>
-                <p><b><h3>₱${item.price}</h3></b></p>
+                <p><strong>₱${item.price}</strong></p>
                 <p>${item.stock_status === 'In-stock' ? '✅ In-stock' : '❌ Out of stock'}</p>
                 ${
                     item.stock_status === 'In-stock'
                     ? `<button class="add-btn" onclick='addToList(${JSON.stringify(item)})'>Add to List</button>`
-                    : `<button class="add-btn" disabled style="background-color: grey; cursor: not-allowed;">Out of Stock</button>`
+                    : `<button class="add-btn" disabled>Out of Stock</button>`
                 }
             `;
             container.appendChild(card);
