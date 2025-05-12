@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash
+from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash, session
 import sqlite3
 import os
 
@@ -127,6 +127,16 @@ def delete_item(item_id):
 
     flash('Item deleted successfully.')
     return redirect(url_for('admin'))
+
+@app.route('/homepage')
+def homepage():
+    session.clear()
+    return redirect(url_for('home'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     import os
