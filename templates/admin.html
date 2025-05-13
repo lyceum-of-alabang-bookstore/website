@@ -115,7 +115,7 @@
    	<header>
         <h1>ADMIN Access - Inventory editor</h1>
 			<img src="https://i.ibb.co/TBZTnjSF/logo.png" alt="Lyceum of Alabang" class="logo-left">
-		<a href="/logout" style="font-size: 14px; position: absolute; top: 25px; right: 40px; background: red; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
+		<a href="/logout" onclick="return confirm('Are you sure you want to log out?')"; style="font-size: 14px; position: absolute; top: 25px; right: 40px; background: red; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
     Logout
 </a>
     </header>
@@ -141,8 +141,11 @@
         <input type="text" name="name" placeholder="Name" required>
         <select name="category" required>
 			<option value="" disabled selected hidden>Select category</option>
-            <option value="Uniforms">Uniforms</option>
             <option value="School supplies">School supplies</option>
+			<option value="Nursery/Kinder/Prep Uniform">Nursery/Kinder/Prep Uniform</option>
+			<option value="Grade 1-6 Uniform">Grade 1-6 Uniform</option>
+			<option value="Grade 7-12 Uniform">Grade 7-12 Uniform</option>
+			<option value="College - Uniform">College - Uniform</option>
 			<option value="Others">Others</option>
         </select>
         <input type="number" name="price" step="0.01" placeholder="Price" required>
@@ -174,8 +177,11 @@
 					<td><input type="text" name="name" value="{{ item['name'] }}" required></td>
 					<td>
 						<select name="category" required>
-							<option value="Uniforms" {% if item['category'] == 'Uniforms' %}selected{% endif %}>Uniforms</option>
 							<option value="School supplies" {% if item['category'] == 'School supplies' %}selected{% endif %}>School supplies</option>
+							<option value="Nursery/Kinder/Prep Uniform" {% if item['category'] == 'Nursery/Kinder/Prep Uniform' %}selected{% endif %}>Nursery/Kinder/Prep Uniform</option>
+							<option value="Grade 1-6 Uniform" {% if item['category'] == 'Grade 1-6 Uniform' %}selected{% endif %}>Grade 1-6 Uniform</option>
+							<option value="Grade 7-12 Uniform" {% if item['category'] == 'Grade 7-12 Uniform' %}selected{% endif %}>Grade 7-12 Uniform</option>
+							<option value="College - Uniform" {% if item['category'] == 'College - Uniform' %}selected{% endif %}>College - Uniform</option>
 							<option value="Others" {% if item['category'] == 'Others' %}selected{% endif %}>Others</option>
 						</select>
 					</td>

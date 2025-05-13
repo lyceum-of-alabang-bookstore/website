@@ -150,7 +150,8 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('home'))
+    flash("You've been logged out.")
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     import os
