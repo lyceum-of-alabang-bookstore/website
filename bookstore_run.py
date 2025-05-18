@@ -46,7 +46,6 @@ def api_items():
 
 @app.route('/api/in-stock')
 def api_in_stock():
-    # Now include 'stock_status' in the select statement
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, name, category, price, stock_status FROM items WHERE stock_status = 'In-stock'")
@@ -88,7 +87,7 @@ def admin():
 
 @app.route('/admin/edit/<int:item_id>', methods=['POST'])
 def admin_edit(item_id):
-    print("Form data received:", request.form)  # <--- Add this line
+    print("Form data received:", request.form)
 
     name = request.form['name']
     category = request.form['category']
