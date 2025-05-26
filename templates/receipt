@@ -1,0 +1,66 @@
+<html>
+<head>
+    <title>Receipt - LOA Bookstore</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #ffffff;
+            color: #000;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #003366;
+            color: white;
+        }
+        .total {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>LOA Bookstore Receipt</h1>
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Price (₱)</th>
+            <th>Quantity</th>
+            <th>Subtotal (₱)</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ "%.2f"|format(item.price * item.quantity) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="total">Total Paid: ₱{{ "%.2f"|format(total) }}</div>
+
+    <a class="home-link" href="/homepage">🏠 Back to Home</a>
+</body>
+</html>

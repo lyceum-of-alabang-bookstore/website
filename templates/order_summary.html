@@ -157,8 +157,6 @@
 </a>
     </header>
 
-    <h2>Items added to list</h2>
-
     <table id="orderTable">
         <thead>
             <tr>
@@ -174,14 +172,19 @@
 
     <div class="total" id="totalPrice">Your Total: ₱0</div>
 
-    <h3>Show your order summary to the bookstore counter.</h3>
-
-    <div>
-        <button onclick="browseItems()" class="browse-btn">Browse more items</button>
-    </div>
+	<div class="d-flex justify-content-between mt-3">
+		<button onclick="browseItems()" class="browse-btn">Browse More Items</button>
+		<button onclick="submitOrder()" class="browse-btn">Generate List</button>
+	</div>
 
     <script>
     let orderList = JSON.parse(localStorage.getItem('orderList')) || [];
+	
+
+	function getOrderSummaryItems() {
+		return orderList;
+	}
+
 
     function updateTable() {
         const tableBody = document.querySelector('#orderTable tbody');
@@ -238,6 +241,37 @@
     function browseItems() {
         window.location.href = '/category.html';
     }
+	
+	function submitOrder() {
+		const orderItems = getOrderSummaryItems(); 
+
+		if (orderItems.length === 0) {
+			alert("Your order list is empty!");
+			return;
+		}
+
+		fetch('/submit_order', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: new URLSearchParams({
+				items: JSON.stringify(orderItems)
+			})
+		})
+		.then(response => response.json())
+		.then(data => {
+			if (data.redirect_url) {
+				window.location.href = data.redirect_url;
+			} else {
+				alert('Error submitting order: ' + (data.error || 'Unknown error'));
+			}
+		})
+		.catch(error => {
+			alert('Network error: ' + error.message);
+		});
+	}
+
+
+
 
     window.onload = updateTable;
     </script>

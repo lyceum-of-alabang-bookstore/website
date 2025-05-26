@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, Response, flash, json, session
 from functools import wraps
 import sqlite3
 import os
@@ -72,8 +72,34 @@ def in_stock():
     return render_template('in_stock.html')
 
 @app.route('/order_summary.html')
-def order_summary():
+def order_summary_page():
     return render_template('order_summary.html')
+
+
+@app.route('/submit_order', methods=['POST'])
+def submit_order():
+    items_json = request.form.get('items')
+    if not items_json:
+        return jsonify({'error': 'No items provided'}), 400
+
+    try:
+        items = json.loads(items_json)
+        session['order_data'] = items  # Store order data in session
+        return jsonify({'redirect_url': '/receipt'})
+    except Exception as e:
+        return jsonify({'error': f'Invalid JSON format: {str(e)}'}), 500
+
+
+@app.route('/receipt')
+def receipt():
+    order_data = session.get('order_data')
+    total = sum(item['price'] * item['quantity'] for item in order_data)
+    if not order_data:
+        flash("No order data found.")
+        return redirect(url_for('order_summary_page'))
+    return render_template('receipt.html', order=order_data, total=total)
+
+
 
 @app.route('/admin')
 @requires_login

@@ -1,0 +1,120 @@
+<html>
+<head>
+    <title>Order List - LOA Bookstore</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+       body {
+            background-color: #fbf572;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin-top: 40px;
+            text-align: center;
+        }
+       header {
+			position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgb(0, 0, 204);
+            color: yellow;
+            font-size: 28px;
+            padding: 25px 200px;
+            margin: 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: yellow;
+            font-size: 26px;
+            margin: 0;
+        }
+
+		.logo-left {
+			position: absolute;
+			top: 10px;
+			left: 15px;
+			width: 60px;
+			height: 60px;
+		}
+
+        h2 {
+            font-size: 22px;
+            margin-top: 100px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .receipt-container {
+            background-color: white;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+            color: #000;
+        }
+
+        .receipt-line {
+			display: flex;
+			justify-content: space-between;
+			align: center;
+			font-size: 16px;
+			padding: 6px 0;
+			border-bottom: 1px dotted #999;
+		}
+
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 20px;
+            border-top: 2px solid #333;
+            padding-top: 10px;
+            text-align: right;
+        }
+
+        .info {
+            font-size: 14px;
+            margin-top: 40px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+		<h1>ORDER LIST</h1>
+		<img src="https://i.ibb.co/TBZTnjSF/logo.png" alt="Lyceum of Alabang" class="logo-left">
+		<a href="/homepage" style="font-size: 14px; position: absolute; top: 20px; right: 40px; background: #21ba12; color: white; padding: 8px 16px; border-radius: 5px; text-decoration: none;">
+			🏠︎ Home
+		</a>
+	</header>
+
+    <h2>Order List saved!</h2>
+
+	 <div class="receipt-container">
+		<div>
+			{% for item in order %}
+				<div class="receipt-line">
+					<span>x {{ item.quantity }} {{ item.name }} - (₱{{ item.price }})</span>
+					<span>₱{{ item.price * item.quantity }}</span>
+				</div>
+
+			{% endfor %}
+		</div>
+
+		<div class="total">Total: ₱{{ total }}</div>
+
+		<p class="info">
+			Present this receipt to the bookstore counter to complete your purchase.
+		</p>
+	</div>
+	
+	<a href="/order_summary.html" style="display: inline-block; margin-top: 20px; background-color: #050f3b; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+    Edit List
+</a>
+
+
+</body>
+</html>
